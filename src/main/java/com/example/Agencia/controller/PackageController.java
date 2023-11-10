@@ -17,12 +17,16 @@ public class PackageController {
     @Autowired
     private PackageRepository repository;
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+
     @PostMapping
     public void savePackage(@RequestBody PackageRequestDTO data){
         Package packageData = new Package(data);
         repository.save(packageData);
         return;
     }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
 
     @GetMapping
     public List<Package> getAll(){
@@ -31,6 +35,8 @@ public class PackageController {
         return packageList;
 
     }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
 
     @PutMapping
     @Transactional
@@ -48,6 +54,17 @@ public class PackageController {
         }
     }
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
 
+    @DeleteMapping("/package/{id}")
+    @Transactional
+    public ResponseEntity deletePackage(@PathVariable("id") Long id){
+        Optional<Package> optionalPackage = repository.findById(id);
+        if(optionalPackage.isPresent()){
+            repository.deleteById(id);
+            return ResponseEntity.ok("Package deleted succesfully!");
+        }
+        return ResponseEntity.notFound().build();
 
+    }
 }
