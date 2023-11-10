@@ -3,8 +3,6 @@ package com.example.Agencia.controller;
 import com.example.Agencia.Guide.Guide;
 import com.example.Agencia.Guide.GuideRepository;
 import com.example.Agencia.Guide.GuideRequestDTO;
-import com.example.Agencia.Package.Package;
-import com.example.Agencia.Package.PackageRequestDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

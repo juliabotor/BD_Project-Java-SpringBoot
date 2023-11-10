@@ -3,8 +3,8 @@ package com.example.Agencia.Guide;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Table(name = "roteiro")
-@Entity(name = "roteiro")
+@Table(name = "guide")
+@Entity(name = "guide")
 @Getter
 @Setter
 @NoArgsConstructor
