@@ -1,6 +1,7 @@
 package com.example.Agencia.controller;
 import com.example.Agencia.Package.PackageRepository;
 import com.example.Agencia.Package.PackageRequestDTO;
+import com.example.Agencia.Package.PackageResponseDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,9 +30,9 @@ public class PackageController {
     @CrossOrigin(origins = "*", allowedHeaders = "*")
 
     @GetMapping
-    public List<Package> getAll(){
+    public List<PackageResponseDTO> getAll(){
 
-        List<Package> packageList = repository.findAll();
+        List<PackageResponseDTO> packageList = repository.findAll().stream().map(PackageResponseDTO::new).toList();
         return packageList;
 
     }
