@@ -1,13 +1,11 @@
 package com.example.Agencia.Package;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Table(name = "Package")
 @Entity(name = "Package")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of="id")
@@ -25,6 +23,7 @@ public class Package {
         this.description = data.description();
         this.image = data.image();
         this.price = data.price();
+        this.id = data.id();
     }
 
 }

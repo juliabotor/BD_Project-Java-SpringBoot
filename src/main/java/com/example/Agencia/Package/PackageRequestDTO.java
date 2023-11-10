@@ -1,4 +1,4 @@
 package com.example.Agencia.Package;
 
-public record PackageRequestDTO (String title, String description, Float price, String image) {
+public record PackageRequestDTO (Long id, String title, String description, Float price, String image) {
 }
