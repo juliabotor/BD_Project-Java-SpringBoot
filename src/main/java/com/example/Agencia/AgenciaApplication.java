@@ -10,5 +10,4 @@ public class AgenciaApplication {
 		SpringApplication.run(AgenciaApplication.class, args);
 	}
 
-
 }
