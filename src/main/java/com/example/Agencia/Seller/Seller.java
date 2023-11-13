@@ -9,8 +9,7 @@ import lombok.*;
 
 @Entity(name = "seller")
 @Table(name = "seller")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of="id")
@@ -21,5 +20,6 @@ public class Seller extends Employee {
     public Seller(SellerRequestDTO sellerData, EmployeeRequestDTO data){
         super(data);
         this.workload = sellerData.workload();
+
     }
 }

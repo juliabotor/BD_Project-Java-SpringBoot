@@ -1,6 +1,6 @@
 package com.example.Agencia.controller;
 
-import com.example.Agencia.Employee.EmployeeRequestDTO;
+import com.example.Agencia.Seller.SellerEmployeeRequestDTO;
 import com.example.Agencia.Seller.Seller;
 import com.example.Agencia.Seller.SellerRepository;
 import com.example.Agencia.Seller.SellerRequestDTO;
@@ -27,12 +27,12 @@ public class SellerController {
     }
 
     @PostMapping
-    public void saveSeller(@RequestBody SellerRequestDTO seller_data, EmployeeRequestDTO employee_data){
-        Seller sellerData = new Seller(seller_data, employee_data);
+    public void saveSeller(@RequestBody SellerEmployeeRequestDTO requestData) {
+        //Employee employee = new Employee(requestData.getEmployeeData());
+        Seller sellerData = new Seller(requestData.getSellerData(), requestData.getEmployeeData());
         repository.save(sellerData);
-        return;
-
     }
+
 
     @PutMapping
     @Transactional
