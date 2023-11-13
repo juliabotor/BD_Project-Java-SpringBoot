@@ -4,9 +4,7 @@ import com.example.Agencia.Driver.Driver;
 import com.example.Agencia.Driver.DriverRepository;
 import com.example.Agencia.Driver.DriverRequestDTO;
 import com.example.Agencia.Driver.DriverResponseDTO;
-import com.example.Agencia.Employee.EmployeeRequestDTO;
-import com.example.Agencia.Seller.Seller;
-import com.example.Agencia.Seller.SellerRequestDTO;
+import com.example.Agencia.Driver.DriverEmployeeRequestDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,11 +27,12 @@ public class DriverController {
     }
 
     @PostMapping
-    public void saveDriver(@RequestBody DriverRequestDTO dataDriver, EmployeeRequestDTO dataEmployee){
-        Driver driverData = new Driver(dataDriver, dataEmployee);
+    public void saveDriver(@RequestBody DriverEmployeeRequestDTO requestData) {
+        //Employee employee = new Employee(requestData.getEmployeeData());
+        Driver driverData = new Driver(requestData.getDriverData(), requestData.getEmployeeData());
         repository.save(driverData);
-        return;
     }
+
 
     @PutMapping
     @Transactional
