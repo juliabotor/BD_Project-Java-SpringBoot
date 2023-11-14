@@ -1,7 +1,26 @@
 package com.example.Agencia.Package;
 
-public record PackageResponseDTO(Long id, String description, String image, String title, Float price) {
-    public PackageResponseDTO(Package package_){
-        this(package_.getId(), package_.getDescription(), package_.getImage(), package_.getTitle(), package_.getPrice());
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class PackageResponseDTO {
+
+    private Long id;
+    private String title;
+    private String description;
+    private Float price;
+    private String image;
+
+
+    public PackageResponseDTO(Long id, String title, String description, Float price, String image) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.image = image;
     }
+
+
 }

@@ -1,40 +1,38 @@
 package com.example.Agencia.controller;
-import com.example.Agencia.Package.PackageRepository;
+
 import com.example.Agencia.Package.PackageRequestDTO;
 import com.example.Agencia.Package.PackageResponseDTO;
+import com.example.Agencia.Package.PackageService;
+import com.example.Agencia.Package.Package;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.example.Agencia.Package.Package;
+
+
 import java.util.List;
 import java.util.Optional;
-
 
 @RestController
 @RequestMapping("package")
 public class PackageController {
 
     @Autowired
-    private PackageRepository repository;
+    private PackageService packageService;
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
 
     @PostMapping
-    public void savePackage(@RequestBody PackageRequestDTO data){
-        Package packageData = new Package(data);
-        repository.save(packageData);
-        return;
+    public void savePackage(@RequestBody PackageRequestDTO packageData) {
+        Package data = new Package(packageData);
+        packageService.savePackage(data.getTitle(), data.getDescription(), data.getPrice(), data.getImage());
     }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
 
     @GetMapping
-    public List<PackageResponseDTO> getAll(){
-
-        List<PackageResponseDTO> packageList = repository.findAll().stream().map(PackageResponseDTO::new).toList();
-        return packageList;
-
+    public List<PackageResponseDTO> getAllPackages() {
+        return packageService.getAllPackages();
     }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -42,7 +40,7 @@ public class PackageController {
     @PutMapping
     @Transactional
     public ResponseEntity updatePackage(@RequestBody PackageRequestDTO data){
-        Optional<Package> optionalPackage = repository.findById(data.id());
+        Optional<Package> optionalPackage = packageService.findPackageById(data.id());
         if (optionalPackage.isPresent()){
             Package packages = optionalPackage.get();
             packages.setTitle(data.title());
@@ -57,15 +55,17 @@ public class PackageController {
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
 
-    @DeleteMapping("/package/{id}")
+    @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity deletePackage(@PathVariable("id") Long id){
-        Optional<Package> optionalPackage = repository.findById(id);
+        Optional<Package> optionalPackage = packageService.findPackageById(id);
         if(optionalPackage.isPresent()){
-            repository.deleteById(id);
+            packageService.deletePackageById(id);
             return ResponseEntity.ok("Package deleted succesfully!");
         }
         return ResponseEntity.notFound().build();
 
     }
+
+
 }
