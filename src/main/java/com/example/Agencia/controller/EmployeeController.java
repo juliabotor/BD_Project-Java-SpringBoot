@@ -1,10 +1,5 @@
 package com.example.Agencia.controller;
-import com.example.Agencia.Employee.Employee;
-import com.example.Agencia.Employee.EmployeeRepository;
-import com.example.Agencia.Employee.EmployeeRequestDTO;
-import com.example.Agencia.Employee.EmployeeResponseDTO;
-import com.example.Agencia.Package.Package;
-import com.example.Agencia.Package.PackageRequestDTO;
+import com.example.Agencia.Employee.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,34 +13,53 @@ import java.util.Optional;
 public class EmployeeController {
 
     @Autowired
-    EmployeeRepository repository;
+    private EmployeeService employeeService;
 
-    @GetMapping
-    public List<EmployeeResponseDTO> getAll(){
-        List<EmployeeResponseDTO> employeeList = repository.findAll().stream().map(EmployeeResponseDTO::new).toList();
-        return employeeList;
-    }
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
 
     @PostMapping
-    public void saveEmployee(@RequestBody EmployeeRequestDTO data){
-        Employee employeeData = new Employee(data);
-        repository.save(employeeData);
-        return;
+    public void saveEmployee(@RequestBody EmployeeRequestDTO employeeData) {
+        Employee data = new Employee(employeeData);
+        employeeService.saveEmployee(data.getName(), data.getCpf(), data.getBirth_date());
     }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+
+
+    @GetMapping
+    public List<EmployeeResponseDTO> getAllEmployees() {
+        return employeeService.getAllEmployees();
+    }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
 
     @PutMapping
     @Transactional
     public ResponseEntity updateEmployee(@RequestBody EmployeeRequestDTO data){
-        Optional<Employee> optionalEmployee = repository.findById(data.id());
+        Optional<Employee> optionalEmployee = employeeService.findEmployeeById(data.id());
         if (optionalEmployee.isPresent()){
-            Employee employee = optionalEmployee.get();
-            employee.setName(data.name());
-            employee.setCpf(data.cpf());
-            employee.setBirth_date(data.birth_date());
-            return ResponseEntity.ok(employee);
+            Employee employees = optionalEmployee.get();
+            employees.setName(data.name());
+            employees.setCpf(data.cpf());
+            employees.setBirth_date(data.birth_date());
+            return ResponseEntity.ok(employees);
         }else{
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity deleteEmployee(@PathVariable("id") Long id){
+        Optional<Employee> optionalEmployee = employeeService.findEmployeeById(id);
+        if(optionalEmployee.isPresent()){
+            employeeService.deleteEmployeeById(id);
+            return ResponseEntity.ok("Employee deleted succesfully!");
+        }
+        return ResponseEntity.notFound().build();
+
     }
 
 }

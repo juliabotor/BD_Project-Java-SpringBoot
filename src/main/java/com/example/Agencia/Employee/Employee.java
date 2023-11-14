@@ -8,7 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.sql.Date;
 
 
-@Entity(name = "employee")
+@Entity
 @Table(name = "employee")
 @Getter
 @Setter
