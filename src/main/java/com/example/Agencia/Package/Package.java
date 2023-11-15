@@ -2,8 +2,8 @@ package com.example.Agencia.Package;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Table(name = "Package")
-@Entity(name = "Package")
+@Table(name = "package")
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor

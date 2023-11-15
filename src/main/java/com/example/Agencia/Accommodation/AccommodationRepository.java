@@ -28,6 +28,7 @@ public interface AccommodationRepository extends CrudRepository<Accommodation, L
     List<AccommodationResponseDTO> findAllAccommodations();
 
     @Modifying
+    @Transactional
     @Query("UPDATE Accommodation a SET a.name = :name, a.street = :street, a.district = :district, a.number = :number, a.image = :image WHERE a.id_accommodation = :id_accommodation")
     void updateAccommodation(@Param("id_accommodation") Long id_accommodation,
                        @Param("name") String name,
