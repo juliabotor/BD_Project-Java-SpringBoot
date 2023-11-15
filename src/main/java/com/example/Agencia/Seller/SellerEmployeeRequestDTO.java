@@ -9,7 +9,9 @@ import java.sql.Date;
 @Setter
 @Data
 public class SellerEmployeeRequestDTO {
-    private SellerRequestDTO sellerData;
-    private EmployeeRequestDTO employeeData;
+    private String name;
+    private String cpf;
+    private Date birth_date;
+    private Integer workload;
 
 }

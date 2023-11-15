@@ -24,11 +24,12 @@ public class Employee {
     private Date birth_date;
     private String cpf;
 
-    public Employee(EmployeeRequestDTO data){
+    public Employee(EmployeeRequestDTO data) {
         this.id = data.id();
         this.birth_date = data.birth_date();
         this.cpf = data.cpf();
         this.name = data.name();
     }
+
 
 }
