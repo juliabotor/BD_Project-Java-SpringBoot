@@ -1,6 +1,7 @@
 package com.example.Agencia.controller;
 
 import com.example.Agencia.Employee.Employee;
+import com.example.Agencia.Employee.EmployeeResponseDTO;
 import com.example.Agencia.Employee.EmployeeService;
 import com.example.Agencia.Seller.*;
 import jakarta.transaction.Transactional;
@@ -24,6 +25,14 @@ public class SellerController {
 
     @Autowired
     private EmployeeService employeeService;
+
+    @CrossOrigin( origins = "*" , allowedHeaders = "*")
+
+
+    @GetMapping
+    public List<SellerResponseDTO> getAllSellers() {
+        return sellerService.getAllSellers();
+    }
 
     @CrossOrigin( origins = "*" , allowedHeaders = "*")
 

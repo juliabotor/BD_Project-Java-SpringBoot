@@ -10,7 +10,9 @@ import java.sql.Date;
 @Setter
 @Data
 public class DriverEmployeeRequestDTO {
-    private DriverRequestDTO driverData;
-    private EmployeeRequestDTO employeeData;
+    private String name;
+    private String cpf;
+    private Date birth_date;
+    private String license_category;
 
 }

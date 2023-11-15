@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.List;
 
 @Service
 public class SellerService {
@@ -17,12 +18,15 @@ public class SellerService {
     }
 
     public void createSeller(Seller seller) {
-        // Adicione logs para depuração
+
         System.out.println("Criando vendedor: " + seller.toString());
 
-        // Lógica para criar um vendedor
-        // Isso pode incluir validações, manipulação de dados, etc.
+
         sellerRepository.save(seller);
+    }
+
+    public List<SellerResponseDTO> getAllSellers() {
+        return sellerRepository.findAllSellers();
     }
 
     @Transactional

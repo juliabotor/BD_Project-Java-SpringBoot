@@ -1,9 +1,24 @@
 package com.example.Agencia.Driver;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.sql.Date;
 
-public record DriverResponseDTO(Long id, String license_category, Date birth_date, String name, String cpf) {
-    public DriverResponseDTO(Driver driver){
-        this(driver.getId(), driver.license_category, driver.getBirth_date(), driver.getName(), driver.getCpf());
+@Setter
+@Getter
+public class DriverResponseDTO{
+    private Long id;
+    private String name;
+    private String cpf;
+    private Date birth_date;
+    private String license_category;
+
+    public DriverResponseDTO(Long id, String name, String cpf, Date birth_date, String license_category) {
+        this.id = id;
+        this.name = name;
+        this.cpf = cpf;
+        this.birth_date = birth_date;
+        this.license_category = license_category;
     }
 }

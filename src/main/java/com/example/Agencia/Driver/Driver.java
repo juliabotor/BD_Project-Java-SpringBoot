@@ -6,7 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.*;
 
-@Entity(name = "driver")
+@Entity
 @Table(name = "driver")
 @Getter
 @Setter

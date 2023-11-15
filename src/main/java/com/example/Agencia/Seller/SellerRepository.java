@@ -25,8 +25,8 @@ public interface SellerRepository extends CrudRepository<Seller, Long> {
                                @Param("birth_date") Date birth_date);
 
 
-    @Query("SELECT new com.example.Agencia.Seller.SellerResponseDTO(e.id, e.name, e.cpf, e.birth_date) FROM Seller e")
-    List<SellerResponseDTO> findAllEmployees();
+    @Query("SELECT new com.example.Agencia.Seller.SellerResponseDTO(e.id, e.name, e.cpf, e.birth_date, e.workload) FROM Employee e WHERE e.workload > 0")
+    List<SellerResponseDTO> findAllSellers();
 
     @Modifying
     @Query("UPDATE Employee e SET e.name = :name, e.cpf = :cpf, e.birth_date = :birth_date, e.workload = :workload WHERE e.id = :id")

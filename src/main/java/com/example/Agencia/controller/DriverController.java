@@ -1,12 +1,11 @@
 package com.example.Agencia.controller;
 
-import com.example.Agencia.Driver.Driver;
-import com.example.Agencia.Driver.DriverRepository;
-import com.example.Agencia.Driver.DriverRequestDTO;
-import com.example.Agencia.Driver.DriverResponseDTO;
-import com.example.Agencia.Driver.DriverEmployeeRequestDTO;
+import com.example.Agencia.Driver.*;
+import com.example.Agencia.Employee.EmployeeService;
+import com.example.Agencia.Seller.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,35 +19,40 @@ public class DriverController {
     @Autowired
     private DriverRepository repository;
 
+    @Autowired
+    private DriverService driverService;
+
+    @Autowired
+    private EmployeeService employeeService;
+
+    @CrossOrigin( origins = "*" , allowedHeaders = "*")
+
+
     @GetMapping
-    public List<DriverResponseDTO> getAll(){
-        List<DriverResponseDTO> driverList = repository.findAll().stream().map(DriverResponseDTO::new).toList();
-        return driverList;
+    public List<DriverResponseDTO> getAllDrivers() {
+        return driverService.getAllDrivers();
     }
+
+    @CrossOrigin( origins = "*" , allowedHeaders = "*")
 
     @PostMapping
-    public void saveDriver(@RequestBody DriverEmployeeRequestDTO requestData) {
-        //Employee employee = new Employee(requestData.getEmployeeData());
-        Driver driverData = new Driver(requestData.getDriverData(), requestData.getEmployeeData());
-        repository.save(driverData);
-    }
+    public ResponseEntity<String> processData(@RequestBody DriverEmployeeRequestDTO dto) {
+        try {
+
+            Driver driver = new Driver();
+            driver.setName(dto.getName());
+            driver.setCpf(dto.getCpf());
+            driver.setBirth_date(dto.getBirth_date());
+            driver.setLicense_category(dto.getLicense_category());
+
+            driverService.createDriver(driver);
 
 
-    @PutMapping
-    @Transactional
-    public ResponseEntity updateDriver(@RequestBody DriverRequestDTO dataDriver){
-        Optional<Driver> optionalDriver = repository.findById(dataDriver.id());
-        if(optionalDriver.isPresent()){
-            Driver driver = optionalDriver.get();
-            driver.setLicense_category(dataDriver.license_category());
-            return ResponseEntity.ok(driver);
-
-        }else{
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok("Dados processados com sucesso");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao processar os dados");
         }
-
     }
-
 
 
 }

@@ -14,6 +14,7 @@ public class EmployeeResponseDTO {
     private String cpf;
     private Date birth_date;
 
+
     public EmployeeResponseDTO(Long id, String name, String cpf, Date birth_date) {
         this.id = id;
         this.name = name;
