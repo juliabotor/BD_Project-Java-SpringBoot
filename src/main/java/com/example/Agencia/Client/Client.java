@@ -3,8 +3,8 @@ package com.example.Agencia.Client;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Table(name = "Client")
-@Entity(name = "Client")
+@Table(name = "client")
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,12 +17,12 @@ public class Client {
     private String cpf;
     private String name;
     private String email;
-    private String phoneNumber;
+    private String phone_number;
 
     public Client(ClientRequestDTO data){
         this.name = data.name();
         this.email = data.email();
-        this.phoneNumber = data.phoneNumber();
+        this.phone_number = data.phone_number();
         this.cpf = data.cpf();
         this.id = data.id();
     }

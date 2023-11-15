@@ -13,8 +13,8 @@ public class PackageService {
     @Autowired
     private PackageRepository packageRepository;
 
-    public Optional<Package> findPackageById(Long id) {
-        return packageRepository.findById(id);
+    public Optional<Package> findPackageById(Long id_package) {
+        return packageRepository.findById(id_package);
     }
 
     public void savePackage(String title, String description, Float price, String image) {
@@ -26,12 +26,12 @@ public class PackageService {
     }
 
     @Transactional
-    public void updatePackage(Long id, String title, String description, Float price, String image) {
-        packageRepository.updatePackage(id, title, description, price, image);
+    public void updatePackage(Long id_package, String title, String description, Float price, String image) {
+        packageRepository.updatePackage(id_package, title, description, price, image);
     }
 
     @Transactional
-    public void deletePackageById(Long id) {
-        packageRepository.deletePackageById(id);
+    public void deletePackageById(Long id_package) {
+        packageRepository.deletePackageById(id_package);
     }
 }

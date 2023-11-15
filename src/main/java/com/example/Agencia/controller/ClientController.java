@@ -1,9 +1,9 @@
 package com.example.Agencia.controller;
 
-import com.example.Agencia.Client.Client;
-import com.example.Agencia.Client.ClientRepository;
-import com.example.Agencia.Client.ClientRequestDTO;
-import com.example.Agencia.Client.ClientResponseDTO;
+import com.example.Agencia.Client.*;
+import com.example.Agencia.Employee.Employee;
+import com.example.Agencia.Employee.EmployeeRequestDTO;
+import com.example.Agencia.Employee.EmployeeResponseDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,32 +19,26 @@ public class ClientController {
     @Autowired
     private ClientRepository repository;
 
-    @GetMapping
-    public List<ClientResponseDTO> getAllClient() {
-        List<ClientResponseDTO> clientList = repository.findAll().stream().map(ClientResponseDTO::new).toList();
-        return clientList;
-    }
+    @Autowired
+    private ClientService clientService;
+
+
+    @CrossOrigin( origins = "*" , allowedHeaders = "*")
+
 
     @PostMapping
-    public Client createClient(@RequestBody ClientRequestDTO clientData) {
-        Client client = new Client(clientData);
-        repository.save(client);
-        return client;
+    public void saveClient(@RequestBody ClientRequestDTO clientData) {
+        Client data = new Client(clientData);
+        clientService.saveClient(data.getCpf(), data.getEmail(), data.getName(), data.getPhone_number());
     }
 
-    @PutMapping
-    @Transactional
-    public ResponseEntity<Client> updateClient(@RequestBody ClientRequestDTO clientData) {
-        Optional<Client> optionalClient = repository.findById(clientData.id());
-        if (optionalClient.isPresent()) {
-            Client client = optionalClient.get();
-            client.setName(clientData.name());
-            client.setEmail(clientData.email());
-            client.setCpf(clientData.cpf());
-            repository.save(client);
-            return ResponseEntity.ok(client);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @CrossOrigin( origins = "*" , allowedHeaders = "*")
+
+    @GetMapping
+    public List<ClientResponseDTO> getAllClients() {
+        return clientService.getAllClients();
     }
+
+
+
 }

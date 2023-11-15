@@ -5,16 +5,16 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Table(name = "accommodation")
-@Entity(name = "accommodation")
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "id_accommodation")
 public class Accommodation {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id_accommodation;
     private String name;
     private String street;
     private String district;
@@ -26,7 +26,7 @@ public class Accommodation {
         this.street = data.street();
         this.number = data.number();
         this.name = data.name();
-        this.id = data.id();
+        this.id_accommodation = data.id_accommodation();
         this.image = data.image();
     }
 

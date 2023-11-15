@@ -40,7 +40,7 @@ public class PackageController {
     @PutMapping
     @Transactional
     public ResponseEntity updatePackage(@RequestBody PackageRequestDTO data){
-        Optional<Package> optionalPackage = packageService.findPackageById(data.id());
+        Optional<Package> optionalPackage = packageService.findPackageById(data.id_package());
         if (optionalPackage.isPresent()){
             Package packages = optionalPackage.get();
             packages.setTitle(data.title());
@@ -57,10 +57,10 @@ public class PackageController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity deletePackage(@PathVariable("id") Long id){
-        Optional<Package> optionalPackage = packageService.findPackageById(id);
+    public ResponseEntity deletePackage(@PathVariable("id_package") Long id_package){
+        Optional<Package> optionalPackage = packageService.findPackageById(id_package);
         if(optionalPackage.isPresent()){
-            packageService.deletePackageById(id);
+            packageService.deletePackageById(id_package);
             return ResponseEntity.ok("Package deleted succesfully!");
         }
         return ResponseEntity.notFound().build();

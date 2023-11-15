@@ -7,15 +7,15 @@ import lombok.Setter;
 @Setter
 public class PackageResponseDTO {
 
-    private Long id;
+    private Long id_package;
     private String title;
     private String description;
     private Float price;
     private String image;
 
 
-    public PackageResponseDTO(Long id, String title, String description, Float price, String image) {
-        this.id = id;
+    public PackageResponseDTO(Long id_package, String title, String description, Float price, String image) {
+        this.id_package = id_package;
         this.title = title;
         this.description = description;
         this.price = price;

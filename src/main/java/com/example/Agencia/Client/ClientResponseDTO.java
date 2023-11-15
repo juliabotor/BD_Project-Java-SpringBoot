@@ -1,7 +1,25 @@
 package com.example.Agencia.Client;
 
-public record ClientResponseDTO(Long id, String cpf, String name, String phoneNumber) {
-    public ClientResponseDTO(Client client){
-        this(client.getId(), client.getName(), client.getPhoneNumber(), client.getCpf());
+import lombok.Getter;
+import lombok.Setter;
+
+import java.sql.Date;
+
+@Getter
+@Setter
+public class ClientResponseDTO{
+    private Long id;
+    private String name;
+    private String cpf;
+    private String email;
+    private String phone_number;
+
+
+    public ClientResponseDTO(Long id, String cpf, String email, String name, String phone_number) {
+        this.id = id;
+        this.cpf = cpf;
+        this.email = email;
+        this.name = name;
+        this.phone_number = phone_number;
     }
 }
