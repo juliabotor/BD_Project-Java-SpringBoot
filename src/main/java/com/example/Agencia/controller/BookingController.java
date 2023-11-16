@@ -1,13 +1,13 @@
 package com.example.Agencia.controller;
 
 import com.example.Agencia.Booking.BookingRequestDTO;
+import com.example.Agencia.Booking.BookingResponseDTO;
 import com.example.Agencia.Booking.BookingService;
 import com.example.Agencia.PackageAccommodation.PackageAccommodationRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("booking")
@@ -15,6 +15,15 @@ public class BookingController {
 
     @Autowired
     private BookingService bookingService;
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+
+    @GetMapping
+    public List<BookingResponseDTO> getBookings(){
+        return bookingService.getBookings();
+    }
+
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
 
     @PostMapping
     public void createBooking(@RequestBody BookingRequestDTO request) {
