@@ -14,8 +14,8 @@ public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    public Optional<Employee> findEmployeeById(Long id) {
-        return employeeRepository.findById(id);
+    public Optional<Employee> findEmployeeById(Long id_employee) {
+        return employeeRepository.findById(id_employee);
     }
 
     public void saveEmployee(String name, String cpf, Date birth_date) {
@@ -27,12 +27,12 @@ public class EmployeeService {
     }
 
     @Transactional
-    public void updateEmployee(Long id, String name, String cpf, Date birth_date) {
-        employeeRepository.updateEmployee(id, name, cpf, birth_date);
+    public void updateEmployee(Long id_employee, String name, String cpf, Date birth_date) {
+        employeeRepository.updateEmployee(id_employee, name, cpf, birth_date);
     }
 
     @Transactional
-    public void deleteEmployeeById(Long id) {
-        employeeRepository.deleteEmployeeById(id);
+    public void deleteEmployeeById(Long id_employee) {
+        employeeRepository.deleteEmployeeById(id_employee);
     }
 }

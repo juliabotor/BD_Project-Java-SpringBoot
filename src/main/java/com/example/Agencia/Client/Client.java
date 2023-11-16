@@ -9,11 +9,11 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of="id")
+@EqualsAndHashCode(of="id_client")
 public class Client {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id_client;
     private String cpf;
     private String name;
     private String email;
@@ -24,7 +24,7 @@ public class Client {
         this.email = data.email();
         this.phone_number = data.phone_number();
         this.cpf = data.cpf();
-        this.id = data.id();
+        this.id_client = data.id_client();
     }
 
 }

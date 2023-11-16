@@ -1,9 +1,6 @@
 package com.example.Agencia.controller;
 
-import com.example.Agencia.Ticket.Ticket;
-import com.example.Agencia.Ticket.TicketRepository;
-import com.example.Agencia.Ticket.TicketRequestDTO;
-import com.example.Agencia.Ticket.TicketResponseDTO;
+import com.example.Agencia.Ticket.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,33 +15,21 @@ import java.util.Optional;
 public class TicketController {
 
     @Autowired
-    private TicketRepository repository;
+    private TicketService ticketService;
 
-    @GetMapping
-    public List<TicketResponseDTO> getAll(){
-        List<TicketResponseDTO> ticketList = repository.findAll().stream().map(TicketResponseDTO::new).toList();
-        return ticketList;
-    }
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
 
     @PostMapping
     public void saveTicket(@RequestBody TicketRequestDTO data){
         Ticket ticketData = new Ticket(data);
-        repository.save(ticketData);
-        return;
+        ticketService.saveTicket(ticketData.getPrice(), ticketData.getDate());
+
     }
 
-    @PutMapping
-    @Transactional
-    public ResponseEntity updateTicket(@RequestBody TicketRequestDTO data){
-        Optional<Ticket> optionalTicket = repository.findById(data.id());
-        if(optionalTicket.isPresent()){
-            Ticket ticket = optionalTicket.get();
-            ticket.setDate(data.date());
-            ticket.setPrice(data.price());
-            return ResponseEntity.ok(ticket);
-        }else{
-            return ResponseEntity.notFound().build();
-        }
-    }
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
 
+    @GetMapping
+    public List<TicketResponseDTO> getAllTickets(){
+        return ticketService.getAllTickets();
+    }
 }

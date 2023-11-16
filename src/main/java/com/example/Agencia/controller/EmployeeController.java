@@ -36,7 +36,7 @@ public class EmployeeController {
     @PutMapping
     @Transactional
     public ResponseEntity updateEmployee(@RequestBody EmployeeRequestDTO data){
-        Optional<Employee> optionalEmployee = employeeService.findEmployeeById(data.id());
+        Optional<Employee> optionalEmployee = employeeService.findEmployeeById(data.id_employee());
         if (optionalEmployee.isPresent()){
             Employee employees = optionalEmployee.get();
             employees.setName(data.name());
@@ -50,12 +50,12 @@ public class EmployeeController {
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id_employee}")
     @Transactional
-    public ResponseEntity deleteEmployee(@PathVariable("id") Long id){
-        Optional<Employee> optionalEmployee = employeeService.findEmployeeById(id);
+    public ResponseEntity deleteEmployee(@PathVariable("id_employee") Long id_employee){
+        Optional<Employee> optionalEmployee = employeeService.findEmployeeById(id_employee);
         if(optionalEmployee.isPresent()){
-            employeeService.deleteEmployeeById(id);
+            employeeService.deleteEmployeeById(id_employee);
             return ResponseEntity.ok("Employee deleted succesfully!");
         }
         return ResponseEntity.notFound().build();

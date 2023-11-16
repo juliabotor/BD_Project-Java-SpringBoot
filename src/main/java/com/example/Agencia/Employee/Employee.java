@@ -14,18 +14,18 @@ import java.sql.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of="id")
+@EqualsAndHashCode(of="id_employee")
 public class Employee {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id_employee;
     private String name;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birth_date;
     private String cpf;
 
     public Employee(EmployeeRequestDTO data) {
-        this.id = data.id();
+        this.id_employee = data.id_employee();
         this.birth_date = data.birth_date();
         this.cpf = data.cpf();
         this.name = data.name();

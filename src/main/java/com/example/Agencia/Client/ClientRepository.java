@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import java.sql.Date;
 import java.util.List;
 
 public interface ClientRepository extends CrudRepository<Client, Long> {
@@ -21,7 +20,7 @@ public interface ClientRepository extends CrudRepository<Client, Long> {
                                @Param("name") String name,
                                @Param("phone_number") String phone_number);
 
-    @Query("SELECT new com.example.Agencia.Client.ClientResponseDTO(c.id, c.cpf, c.email, c.name, c.phone_number) FROM Client c")
+    @Query("SELECT new com.example.Agencia.Client.ClientResponseDTO(c.id_client, c.cpf, c.email, c.name, c.phone_number) FROM Client c")
     List<ClientResponseDTO> findAllClients();
 
 }

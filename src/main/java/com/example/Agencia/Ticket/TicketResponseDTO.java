@@ -1,9 +1,22 @@
 package com.example.Agencia.Ticket;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.sql.Date;
 
-public record TicketResponseDTO(Long id, Float price, Date date) {
-    public TicketResponseDTO(Ticket ticket){
-        this(ticket.getId(), ticket.getPrice(), ticket.getDate());
+@Getter
+@Setter
+public class TicketResponseDTO{
+
+    private Long id_ticket;
+    private Float price;
+    private Date date;
+
+
+    public TicketResponseDTO(Long id_ticket, Float price, Date date){
+        this.id_ticket = id_ticket;
+        this.price = price;
+        this.date = date;
     }
 }

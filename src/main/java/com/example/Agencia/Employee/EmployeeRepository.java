@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 
-    Optional<Employee> findById(Long id);
+    Optional<Employee> findById(Long id_employee);
 
     @Modifying
     @Transactional
@@ -22,19 +22,19 @@ public interface EmployeeRepository extends CrudRepository<Employee, Long> {
                               @Param("birth_date") Date birth_date);
 
 
-    @Query("SELECT new com.example.Agencia.Employee.EmployeeResponseDTO(e.id, e.name, e.cpf, e.birth_date) FROM Employee e")
+    @Query("SELECT new com.example.Agencia.Employee.EmployeeResponseDTO(e.id_employee, e.name, e.cpf, e.birth_date) FROM Employee e")
     List<EmployeeResponseDTO> findAllEmployees();
 
     @Modifying
-    @Query("UPDATE Employee e SET e.name = :name, e.cpf = :cpf, e.birth_date = :birth_date WHERE e.id = :id")
-    void updateEmployee(@Param("id") Long id,
+    @Query("UPDATE Employee e SET e.name = :name, e.cpf = :cpf, e.birth_date = :birth_date WHERE e.id_employee = :id_employee")
+    void updateEmployee(@Param("id_employee") Long id_employee,
                        @Param("name") String name,
                        @Param("cpf") String cpf,
                        @Param("birth_date") Date birth_date);
 
     @Modifying
-    @Query("DELETE FROM Employee e WHERE e.id = :id")
-    void deleteEmployeeById(@Param("id") Long id);
+    @Query("DELETE FROM Employee e WHERE e.id_employee = :id_employee")
+    void deleteEmployeeById(@Param("id_employee") Long id_employee);
 
 
 }
