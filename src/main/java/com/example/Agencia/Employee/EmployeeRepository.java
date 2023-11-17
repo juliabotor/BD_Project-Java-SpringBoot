@@ -16,13 +16,14 @@ public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 
     @Modifying
     @Transactional
-    @Query("INSERT INTO Employee(name, cpf, birth_date) VALUES (:name, :cpf, :birth_date)")
+    @Query("INSERT INTO Employee(name, cpf, birth_date, id_supervisor) VALUES (:name, :cpf, :birth_date, :id_supervisor)")
     void saveEmployeeWithQuery(@Param("name") String name,
                               @Param("cpf") String cpf,
-                              @Param("birth_date") Date birth_date);
+                              @Param("birth_date") Date birth_date,
+                               @Param("id_supervisor") Long id_supervisor);
 
 
-    @Query("SELECT new com.example.Agencia.Employee.EmployeeResponseDTO(e.id_employee, e.name, e.cpf, e.birth_date) FROM Employee e")
+    @Query("SELECT new com.example.Agencia.Employee.EmployeeResponseDTO(e.id_employee, e.name, e.cpf, e.birth_date, e.id_supervisor) FROM Employee e")
     List<EmployeeResponseDTO> findAllEmployees();
 
     @Modifying

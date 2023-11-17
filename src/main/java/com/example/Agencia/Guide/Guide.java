@@ -9,15 +9,15 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of="id")
+@EqualsAndHashCode(of="id_guide")
 public class Guide {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id_guide;
     private String description;
 
     public Guide(GuideRequestDTO data){
-        this.id = data.id();
+        this.id_guide = data.id_guide();
         this.description = data.description();
     }
 

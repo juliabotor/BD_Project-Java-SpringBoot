@@ -22,7 +22,7 @@ public class SellerService {
         System.out.println("Criando vendedor: " + seller.toString());
 
 
-        sellerRepository.save(seller);
+        sellerRepository.saveSellerWithQuery(seller.getName(), seller.getCpf(), seller.getBirth_date(), seller.getWorkload(), seller.getId_supervisor());
     }
 
     public List<SellerResponseDTO> getAllSellers() {
@@ -30,8 +30,8 @@ public class SellerService {
     }
 
     @Transactional
-    public void updateSeller(Long id, String name, String cpf, Date birth_date, Integer workload){
-        sellerRepository.updateSeller(id, name, cpf, birth_date, workload);
+    public void updateSeller(Long id_employee, String name, String cpf, Date birth_date, Integer workload, Long id_supervisor){
+        sellerRepository.updateSeller(id_employee, name, cpf, birth_date, workload, id_supervisor);
     }
 
 }

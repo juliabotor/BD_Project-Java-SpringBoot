@@ -13,5 +13,6 @@ public class SellerEmployeeRequestDTO {
     private String cpf;
     private Date birth_date;
     private Integer workload;
+    private Long id_supervisor;
 
 }

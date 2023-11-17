@@ -1,4 +1,5 @@
 package com.example.Agencia.Package;
+import com.example.Agencia.Guide.Guide;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,6 +19,10 @@ public class Package {
     private String description;
     private Float price;
     private String image;
+
+    @OneToOne
+    @JoinColumn(name = "id_guide", unique = true)
+    private Guide guide;
 
     public Package(PackageRequestDTO data){
         this.title = data.title();

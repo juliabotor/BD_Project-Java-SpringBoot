@@ -31,17 +31,5 @@ public class GuideController {
         return;
     }
 
-    @PutMapping
-    @Transactional
-    public ResponseEntity updateGuide(@RequestBody GuideRequestDTO data){
-        Optional<Guide> optionalGuide = repository.findById(data.id());
-        if (optionalGuide.isPresent()){
-            Guide guide = optionalGuide.get();
-            guide.setDescription(data.description());
-            return ResponseEntity.ok(guide);
-        }else{
-            return ResponseEntity.notFound().build();
-        }
-    }
 
 }

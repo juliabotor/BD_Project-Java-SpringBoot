@@ -20,7 +20,7 @@ public class EmployeeController {
     @PostMapping
     public void saveEmployee(@RequestBody EmployeeRequestDTO employeeData) {
         Employee data = new Employee(employeeData);
-        employeeService.saveEmployee(data.getName(), data.getCpf(), data.getBirth_date());
+        employeeService.saveEmployee(data.getName(), data.getCpf(), data.getBirth_date(), data.getId_supervisor());
     }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")

@@ -12,7 +12,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of="id")
+@EqualsAndHashCode(of="id_employee")
 public class Seller extends Employee {
 
     private Integer workload;

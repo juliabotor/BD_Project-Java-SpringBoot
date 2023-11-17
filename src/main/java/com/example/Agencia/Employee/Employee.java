@@ -24,11 +24,15 @@ public class Employee {
     private Date birth_date;
     private String cpf;
 
+    @Column(name = "id_supervisor")
+    private Long id_supervisor;
+
     public Employee(EmployeeRequestDTO data) {
         this.id_employee = data.id_employee();
         this.birth_date = data.birth_date();
         this.cpf = data.cpf();
         this.name = data.name();
+        this.id_supervisor = data.id_supervisor();
     }
 
 

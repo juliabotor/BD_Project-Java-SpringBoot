@@ -18,8 +18,8 @@ public class EmployeeService {
         return employeeRepository.findById(id_employee);
     }
 
-    public void saveEmployee(String name, String cpf, Date birth_date) {
-        employeeRepository.saveEmployeeWithQuery(name, cpf, birth_date);
+    public void saveEmployee(String name, String cpf, Date birth_date, Long id_supervisor) {
+        employeeRepository.saveEmployeeWithQuery(name, cpf, birth_date, id_supervisor);
     }
 
     public List<EmployeeResponseDTO> getAllEmployees() {
