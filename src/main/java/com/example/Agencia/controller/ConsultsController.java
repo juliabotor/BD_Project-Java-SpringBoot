@@ -71,7 +71,20 @@ public class ConsultsController {
         return jdbcTemplate.queryForMap(sql, cpf);
     }
 
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
 
+    @GetMapping("/bookings/count_package")
+    public Map<String, Object> getMaxPackageSell() {
+        String sql = "SELECT id_package, MAX(total_reservas) AS max_reservas " +
+                "FROM (SELECT id_package, COUNT(*) AS total_reservas " +
+                "FROM booking " +
+                "GROUP BY id_package) AS pacotes_reservas " +
+                "GROUP BY id_package " +
+                "ORDER BY max_reservas DESC " +
+                "LIMIT 1";
+
+        return jdbcTemplate.queryForMap(sql);
+    }
 
 
 
