@@ -2,8 +2,7 @@ package com.example.Agencia.Driver;
 
 import com.example.Agencia.Employee.Employee;
 import com.example.Agencia.Employee.EmployeeRequestDTO;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -12,13 +11,15 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of="id")
-public class Driver extends Employee {
+@EqualsAndHashCode(of="id_driver")
+public class Driver{
 
-    String license_category;
+    @Id
+    private Long id_driver;
+    private String license_category;
 
-    public Driver(DriverRequestDTO driverData, EmployeeRequestDTO employeeData){
-        super(employeeData);
+    public Driver(DriverRequestDTO driverData){
+        this.id_driver = driverData.id_driver();
         this.license_category = driverData.license_category();
     }
 

@@ -16,14 +16,13 @@ import java.util.Optional;
 @RequestMapping("driver")
 public class DriverController {
 
+
     @Autowired
     private DriverRepository repository;
 
     @Autowired
     private DriverService driverService;
 
-    @Autowired
-    private EmployeeService employeeService;
 
     @CrossOrigin( origins = "*" , allowedHeaders = "*")
 
@@ -36,23 +35,11 @@ public class DriverController {
     @CrossOrigin( origins = "*" , allowedHeaders = "*")
 
     @PostMapping
-    public ResponseEntity<String> processData(@RequestBody DriverEmployeeRequestDTO dto) {
-        try {
-
-            Driver driver = new Driver();
-            driver.setName(dto.getName());
-            driver.setCpf(dto.getCpf());
-            driver.setBirth_date(dto.getBirth_date());
-            driver.setLicense_category(dto.getLicense_category());
-
-            driverService.createDriver(driver);
-
-
-            return ResponseEntity.ok("Dados processados com sucesso");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao processar os dados");
-        }
+    public void saveDriver(@RequestBody DriverRequestDTO dto) {
+        Driver driver = new Driver(dto);
+        driverService.saveDriver(driver.getId_driver(), driver.getLicense_category());
     }
+
 
 
 }

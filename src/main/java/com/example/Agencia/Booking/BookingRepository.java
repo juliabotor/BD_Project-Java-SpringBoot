@@ -1,29 +1,42 @@
 package com.example.Agencia.Booking;
 
 import com.example.Agencia.PackageAccommodation.PackageAccommodationResponseDTO;
-import jakarta.transaction.Transactional;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface BookingRepository extends CrudRepository<Booking, Long> {
+@Repository
+public class BookingRepository {
 
-    @Modifying
+    private final JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public BookingRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
     @Transactional
-    @Query("INSERT INTO booking(id_package, id_employee, id_client, id_ticket) VALUES (:id_package, :id_employee, :id_client, :id_ticket)")
-    void saveBookingWithQuery(@Param("id_package") Long id_package,
-                                           @Param("id_employee") Long id_employee,
-                                           @Param("id_client") Long id_client,
-                                           @Param("id_ticket") Long id_ticket);
+    public void saveBooking(Long id_package, Long id_seller, Long id_client, Long id_ticket) {
+        String sql = "INSERT INTO booking(id_package, id_seller, id_client, id_ticket) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sql, id_package, id_seller, id_client, id_ticket);
+    }
 
-    @Query("SELECT NEW com.example.Agencia.Booking.BookingResponseDTO(b.id_package, p.title, e.name, b.id_employee, b.id_client, c.name,b.id_ticket) " +
-            "FROM com.example.Agencia.Booking.Booking b " +
-            "JOIN com.example.Agencia.Employee.Employee e ON b.id_employee = e.id_employee " +
-            "JOIN com.example.Agencia.Package.Package p ON b.id_package = p.id_package " +
-            "JOIN com.example.Agencia.Client.Client c ON b.id_client = c.id_client")
-    List<BookingResponseDTO> findBookings();
+    public List<BookingResponseDTO> findBookings() {
+        String sql = "select b.id_package, b.id_seller, b.id_client, b.id_ticket " +
+                "FROM booking b " +
+                "JOIN seller s ON b.id_seller = s.id_seller " +
+                "JOIN package p ON b.id_package = p.id_package " +
+                "JOIN client c ON b.id_client = c.id_client";
 
+        return jdbcTemplate.query(sql, (resultSet, rowNum) ->
+                new BookingResponseDTO(
+                        resultSet.getLong("id_package"),
+                        resultSet.getLong("id_client"),
+                        resultSet.getLong("id_seller"),
+                        resultSet.getLong("id_ticket")
+                ));
+    }
 }

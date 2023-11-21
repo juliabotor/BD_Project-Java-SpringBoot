@@ -13,7 +13,7 @@ public class TicketService {
     private TicketRepository ticketRepository;
 
     public void saveTicket(Float price, Date date) {
-        ticketRepository.saveTicketWithQuery(price, date);
+        ticketRepository.saveTicket(price, date);
     }
 
     public List<TicketResponseDTO> getAllTickets(){

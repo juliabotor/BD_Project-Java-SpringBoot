@@ -20,21 +20,15 @@ public class DriverService {
         this.driverRepository = driverRepository;
     }
 
-    public void createDriver(Driver driver) {
-        System.out.println("Criando Motorista: " + driver.toString());
-
-
-        driverRepository.save(driver);
+    public void saveDriver(Long id_driver, String license_category) {
+        driverRepository.saveDriver(id_driver, license_category);
     }
 
     public List<DriverResponseDTO> getAllDrivers() {
-        return driverRepository.findAllDrivers();
+        return driverRepository.findAllDriver();
     }
 
-    @Transactional
-    public void updateDriver(Long id, String name, String cpf, Date birth_date, String license_category){
-        driverRepository.updateDriver(id, name, cpf, birth_date, license_category);
-    }
+
 
 
 }

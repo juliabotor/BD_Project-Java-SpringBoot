@@ -25,7 +25,7 @@ public class AccommodationController {
     @PostMapping
     public void saveAccommodation(@RequestBody AccommodationRequestDTO accommodationData) {
         Accommodation data = new Accommodation(accommodationData);
-        accommodationService.saveAccommodation(data.getName(), data.getStreet(), data.getDistrict(), data.getNumber(), data.getImage());
+        accommodationService.saveAccommodation(data.getName(), data.getStreet(), data.getDistrict(), data.getImage(), data.getNumber());
     }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -35,37 +35,7 @@ public class AccommodationController {
         return accommodationService.getAllAccommodation();
     }
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
 
-    @PutMapping
-    @Transactional
-    public ResponseEntity updateAccommodation(@RequestBody AccommodationRequestDTO data){
-        Optional<Accommodation> optionalAccommodation = accommodationService.findAccommodationById(data.id_accommodation());
-        if (optionalAccommodation.isPresent()){
-            Accommodation accommodations = optionalAccommodation.get();
-            accommodations.setName(data.name());
-            accommodations.setStreet(data.street());
-            accommodations.setDistrict(data.district());
-            accommodations.setNumber(data.number());
-            accommodations.setImage(data.image());
-            return ResponseEntity.ok(accommodations);
-        }else{
-            return ResponseEntity.notFound().build();
-        }
-    }
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-
-    @DeleteMapping("/{id}")
-    @Transactional
-    public ResponseEntity deleteAccommodation(@PathVariable("id_accommodation") Long id_accommodation){
-        Optional<Accommodation> optionalAccommodation = accommodationService.findAccommodationById(id_accommodation);
-        if(optionalAccommodation.isPresent()){
-            accommodationService.deleteAccommodationById(id_accommodation);
-            return ResponseEntity.ok("'Accommodation' deleted succesfully!");
-        }
-        return ResponseEntity.notFound().build();
-
-    }
 
 }

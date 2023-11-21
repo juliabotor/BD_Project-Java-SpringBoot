@@ -2,23 +2,25 @@ package com.example.Agencia.Seller;
 
 import com.example.Agencia.Employee.Employee;
 import com.example.Agencia.Employee.EmployeeRequestDTO;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 
-@Entity
+@Entity(name = "seller")
 @Table(name = "seller")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of="id_employee")
-public class Seller extends Employee {
+@EqualsAndHashCode(of="id_seller")
+public class Seller{
+
+    @Id
+    private Long id_seller;
 
     private Integer workload;
 
-    public Seller(SellerRequestDTO sellerData, EmployeeRequestDTO data){
-        super(data);
+    public Seller(SellerRequestDTO sellerData){
+        this.id_seller = sellerData.id_seller();
         this.workload = sellerData.workload();
 
     }

@@ -3,42 +3,60 @@ package com.example.Agencia.Accommodation;
 import com.example.Agencia.Package.Package;
 import com.example.Agencia.Package.PackageResponseDTO;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface AccommodationRepository extends CrudRepository<Accommodation, Long> {
+@Repository
+public class AccommodationRepository  {
 
-    Optional<Accommodation> findById(Long id_accommodation);
+    private JdbcTemplate jdbcTemplate;
 
-    @Modifying
-    @Transactional
-    @Query("INSERT INTO Accommodation(name, street, district, number, image) VALUES (:name, :street, :district, :number, :image)")
-    void saveAccommodationWithQuery(@Param("name") String name,
-                              @Param("street") String street,
-                              @Param("district") String district,
-                              @Param("number") Integer number,
-                              @Param("image") String image);
+    @Autowired
+    public AccommodationRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
-    @Query("SELECT new com.example.Agencia.Accommodation.AccommodationResponseDTO(a.id_accommodation, a.name, a.street, a.district, a.number, a.image) FROM Accommodation a")
-    List<AccommodationResponseDTO> findAllAccommodations();
+    public Optional<Accommodation> findById(Long id_accommodation) {
+        String sql = "SELECT * FROM Accommodation WHERE id_accommodation = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{id_accommodation}, (resultSet, rowNum) ->
+                Optional.of(new Accommodation(
+                        resultSet.getLong("id_accommodation"),
+                        resultSet.getString("name"),
+                        resultSet.getString("street"),
+                        resultSet.getString("district"),
+                        resultSet.getInt("number"),
+                        resultSet.getString("image")
+                ))
+        );
+    }
 
-    @Modifying
-    @Transactional
-    @Query("UPDATE Accommodation a SET a.name = :name, a.street = :street, a.district = :district, a.number = :number, a.image = :image WHERE a.id_accommodation = :id_accommodation")
-    void updateAccommodation(@Param("id_accommodation") Long id_accommodation,
-                       @Param("name") String name,
-                       @Param("street") String street,
-                       @Param("district") String district,
-                       @Param("number") Integer number,
-                       @Param("image") String image);
+    public void saveAccommodation(String name, String district, String street, String image, Integer number) {
+        String sql = "INSERT INTO Accommodation (name, district, street, image, number) VALUES (?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, name, district, street, image, number);
+    }
 
-    @Modifying
-    @Query("DELETE FROM Accommodation a WHERE a.id_accommodation = :id_accommodation")
-    void deleteAccommodationById(@Param("id_accommodation") Long id_accommodation);
+    public List<AccommodationResponseDTO> findAllAccommodations() {
+        String sql = "SELECT id_accommodation, name, district, street, image, number FROM Accommodation";
+        return jdbcTemplate.query(sql, (resultSet, rowNum) ->
+                new AccommodationResponseDTO(
+                        resultSet.getLong("id_accommodation"),
+                        resultSet.getString("name"),
+                        resultSet.getString("district"),
+                        resultSet.getString("street"),
+                        resultSet.getInt("number"),
+                        resultSet.getString("image")
+                )
+        );
+    }
+
+
 
 }

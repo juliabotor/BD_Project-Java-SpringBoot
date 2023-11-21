@@ -1,37 +1,46 @@
 package com.example.Agencia.Driver;
 
-import com.example.Agencia.Seller.SellerResponseDTO;
-import jakarta.transaction.Transactional;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
-public interface DriverRepository extends CrudRepository<Driver,Long> {
+@Repository
+public class DriverRepository {
 
-    @Modifying
-    @Transactional
-    @Query("INSERT INTO Employee(name, cpf, birth_date) VALUES (:name, :cpf, :birth_date)")
-    void saveDriverWithQuery(@Param("name") String name,
-                             @Param("cpf") String cpf,
-                             @Param("birth_date") Date birth_date);
+    private JdbcTemplate jdbcTemplate;
 
+    public DriverRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
-    @Query("SELECT new com.example.Agencia.Driver.DriverResponseDTO(e.id, e.name, e.cpf, e.birth_date, e.license_category) FROM Employee e WHERE e.license_category != 'NULL'")
-    List<DriverResponseDTO> findAllDrivers();
+    public Optional<Driver> findById(Long id_driver) {
+        String sql = "SELECT * FROM Driver WHERE id_driver = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{id_driver}, (resultSet, rowNum) ->
+                Optional.of(new Driver(
+                        resultSet.getLong("id_driver"),
+                        resultSet.getString("license_category")
+                ))
+        );
+    }
 
-    @Modifying
-    @Query("UPDATE Employee e SET e.name = :name, e.cpf = :cpf, e.birth_date = :birth_date, e.license_category = :license_category WHERE e.id = :id")
-    void updateDriver(@Param("id") Long id,
-                      @Param("name") String name,
-                      @Param("cpf") String cpf,
-                      @Param("birth_date") Date birth_date,
-                      @Param("license_category") String license_category);
+    public void saveDriver(Long id_driver, String license_category) {
+        String sql = "INSERT INTO Driver(id_driver, license_category) VALUES (?, ?)";
+        jdbcTemplate.update(sql, id_driver,license_category);
+    }
 
+    public List<DriverResponseDTO> findAllDriver() {
+        String sql = "SELECT id_driver, license_category FROM Driver";
 
+        return jdbcTemplate.query(sql, (resultSet, rowNum) ->
+                new DriverResponseDTO(
+                        resultSet.getLong("id_driver"),
+                        resultSet.getString("license_category")
+                )
+        );
+    }
 
 }

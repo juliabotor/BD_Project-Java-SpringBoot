@@ -1,41 +1,61 @@
 package com.example.Agencia.Employee;
-
-import jakarta.transaction.Transactional;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
-public interface EmployeeRepository extends CrudRepository<Employee, Long> {
+@Repository
+public class EmployeeRepository {
 
-    Optional<Employee> findById(Long id_employee);
+    private final JdbcTemplate jdbcTemplate;
 
-    @Modifying
-    @Transactional
-    @Query("INSERT INTO Employee(name, cpf, birth_date, id_supervisor) VALUES (:name, :cpf, :birth_date, :id_supervisor)")
-    void saveEmployeeWithQuery(@Param("name") String name,
-                              @Param("cpf") String cpf,
-                              @Param("birth_date") Date birth_date,
-                               @Param("id_supervisor") Long id_supervisor);
+    @Autowired
+    public EmployeeRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
+    public Optional<Employee> findById(Long id_employee) {
+        String sql = "SELECT * FROM Employee WHERE id_employee = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{id_employee}, (resultSet, rowNum) ->
+                Optional.of(new Employee(
+                        resultSet.getLong("id_employee"),
+                        resultSet.getString("name"),
+                        resultSet.getDate("birth_date"),
+                        resultSet.getString("cpf"),
+                        resultSet.getLong("id_supervisor")
+                ))
+        );
+    }
 
-    @Query("SELECT new com.example.Agencia.Employee.EmployeeResponseDTO(e.id_employee, e.name, e.cpf, e.birth_date, e.id_supervisor) FROM Employee e")
-    List<EmployeeResponseDTO> findAllEmployees();
+    public void saveEmployee(String name, String cpf, Date birth_date, Long id_supervisor) {
+        String sql = "INSERT INTO Employee (name, cpf, birth_date, id_supervisor) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sql, name, cpf, birth_date, id_supervisor);
+    }
 
-    @Modifying
-    @Query("UPDATE Employee e SET e.name = :name, e.cpf = :cpf, e.birth_date = :birth_date WHERE e.id_employee = :id_employee")
-    void updateEmployee(@Param("id_employee") Long id_employee,
-                       @Param("name") String name,
-                       @Param("cpf") String cpf,
-                       @Param("birth_date") Date birth_date);
+    public List<EmployeeResponseDTO> findAllEmployees() {
+        String sql = "SELECT id_employee, name, cpf, birth_date, id_supervisor FROM Employee";
+        return jdbcTemplate.query(sql, (resultSet, rowNum) ->
+                new EmployeeResponseDTO(
+                        resultSet.getLong("id_employee"),
+                        resultSet.getString("name"),
+                        resultSet.getString("cpf"),
+                        resultSet.getDate("birth_date"),
+                        resultSet.getLong("id_supervisor")
+                )
+        );
+    }
 
-    @Modifying
-    @Query("DELETE FROM Employee e WHERE e.id_employee = :id_employee")
-    void deleteEmployeeById(@Param("id_employee") Long id_employee);
+    public void updateEmployee(Long id_employee, String name, String cpf, Date birth_date) {
+        String sql = "UPDATE Employee SET name = ?, cpf = ?, birth_date = ? WHERE id_employee = ?";
+        jdbcTemplate.update(sql, name, cpf, birth_date, id_employee);
+    }
 
-
+    public void deleteEmployeeById(Long id_employee) {
+        String sql = "DELETE FROM Employee WHERE id_employee = ?";
+        jdbcTemplate.update(sql, id_employee);
+    }
 }

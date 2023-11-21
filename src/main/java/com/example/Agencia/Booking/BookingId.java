@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class BookingId implements Serializable {
     private Long id_package;
     private Long id_ticket;
-    private Long id_employee;
+    private Long id_seller;
     private Long id_client;
 
 }

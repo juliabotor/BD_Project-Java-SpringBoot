@@ -27,7 +27,7 @@ public class BookingController {
 
     @PostMapping
     public void createBooking(@RequestBody BookingRequestDTO request) {
-        bookingService.createBooking(request.getId_package(), request.getId_employee(), request.getId_client(), request.getId_ticket());
+        bookingService.createBooking(request.getId_package(), request.getId_seller(), request.getId_client(), request.getId_ticket());
     }
 
 }

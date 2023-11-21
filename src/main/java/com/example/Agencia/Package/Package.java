@@ -20,9 +20,8 @@ public class Package {
     private Float price;
     private String image;
 
-    @OneToOne
-    @JoinColumn(name = "id_guide", unique = true)
-    private Guide guide;
+
+    private Long id_guide;
 
     public Package(PackageRequestDTO data){
         this.title = data.title();
@@ -30,6 +29,7 @@ public class Package {
         this.image = data.image();
         this.price = data.price();
         this.id_package = data.id_package();
+        this.id_guide = data.getId_guide();
     }
 
 

@@ -20,22 +20,13 @@ public class AccommodationService {
         return accommodationRepository.findById(id_accommodation);
     }
 
-    public void saveAccommodation(String name, String street, String district, Integer number, String image) {
-        accommodationRepository.saveAccommodationWithQuery(name, street, district, number, image);
+    public void saveAccommodation(String name, String street, String district, String image, Integer number) {
+        accommodationRepository.saveAccommodation(name, street, district, image, number);
     }
 
     public List<AccommodationResponseDTO> getAllAccommodation() {
         return accommodationRepository.findAllAccommodations();
     }
 
-    @Transactional
-    public void updateAccommodation(Long id_accommodation, String name, String street, String district, Integer number, String image) {
-        accommodationRepository.updateAccommodation(id_accommodation, name, street, district, number, image);
-    }
-
-    @Transactional
-    public void deleteAccommodationById(Long id_accommodation) {
-        accommodationRepository.deleteAccommodationById(id_accommodation);
-    }
 
 }

@@ -10,6 +10,6 @@ public class BookingRequestDTO {
     private Long id_package;
     private Long id_ticket;
     private Long id_client;
-    private Long id_employee;
+    private Long id_seller;
 
 }

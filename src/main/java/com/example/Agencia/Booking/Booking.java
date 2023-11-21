@@ -24,7 +24,7 @@ public class Booking {
     @Id
     private Long id_ticket;
     @Id
-    private Long id_employee;
+    private Long id_seller;
     @Id
     private Long id_client;
 

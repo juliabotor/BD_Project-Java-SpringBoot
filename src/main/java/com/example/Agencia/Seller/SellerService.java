@@ -17,21 +17,14 @@ public class SellerService {
         this.sellerRepository = sellerRepository;
     }
 
-    public void createSeller(Seller seller) {
-
-        System.out.println("Criando vendedor: " + seller.toString());
-
-
-        sellerRepository.saveSellerWithQuery(seller.getName(), seller.getCpf(), seller.getBirth_date(), seller.getWorkload(), seller.getId_supervisor());
+    public void saveSeller(Long id_seller, Integer workload) {
+        sellerRepository.saveSeller(id_seller, workload);
     }
 
     public List<SellerResponseDTO> getAllSellers() {
         return sellerRepository.findAllSellers();
     }
 
-    @Transactional
-    public void updateSeller(Long id_employee, String name, String cpf, Date birth_date, Integer workload, Long id_supervisor){
-        sellerRepository.updateSeller(id_employee, name, cpf, birth_date, workload, id_supervisor);
-    }
+
 
 }

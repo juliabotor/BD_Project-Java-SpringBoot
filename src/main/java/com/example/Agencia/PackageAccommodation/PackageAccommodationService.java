@@ -27,7 +27,7 @@ public class PackageAccommodationService {
 
     public void associatePackageAccommodation(Long id_package, Long id_accommodation) {
 
-            packageAccommodationRepository.savePackageAccommodationWithQuery(id_package, id_accommodation);
+            packageAccommodationRepository.savePackageAccommodation(id_package, id_accommodation);
 
     }
 

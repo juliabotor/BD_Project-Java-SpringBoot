@@ -1,39 +1,60 @@
 package com.example.Agencia.Package;
-
-import jakarta.transaction.Transactional;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface PackageRepository extends CrudRepository<Package, Long> {
+@Repository
+public class PackageRepository {
 
-    Optional<Package> findById(Long id_package);
+    private final JdbcTemplate jdbcTemplate;
 
-    @Modifying
-    @Transactional
-    @Query("INSERT INTO Package(title, description, price, image) VALUES (:title, :description, :price, :image)")
-    void savePackageWithQuery(@Param("title") String title,
-                              @Param("description") String description,
-                              @Param("price") Float price,
-                              @Param("image") String image);
+    @Autowired
+    public PackageRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
-    @Query("SELECT new com.example.Agencia.Package.PackageResponseDTO(p.id_package, p.title, p.description, p.price, p.image) FROM Package p")
-    List<PackageResponseDTO> findAllPackages();
+    public Optional<Package> findById(Long id_package) {
+        String sql = "SELECT * FROM Package WHERE id_package = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{id_package}, (resultSet, rowNum) ->
+                Optional.of(new Package(
+                        resultSet.getLong("id_package"),
+                        resultSet.getString("title"),
+                        resultSet.getString("description"),
+                        resultSet.getFloat("price"),
+                        resultSet.getString("image"),
+                        resultSet.getLong("id_guide")
+                ))
+        );
+    }
 
-    @Modifying
-    @Query("UPDATE Package p SET p.title = :title, p.description = :description, p.price = :price, p.image = :image WHERE p.id_package = :id_package")
-    void updatePackage(@Param("id_package") Long id_package,
-                       @Param("title") String title,
-                       @Param("description") String description,
-                       @Param("price") Float price,
-                       @Param("image") String image);
+    public void savePackage(String title, String description, Float price, String image, Long id_guide) {
+        String sql = "INSERT INTO Package (title, description, price, image, id_guide) VALUES (?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, title, description, price, image, id_guide);
+    }
 
-    @Modifying
-    @Query("DELETE FROM Package p WHERE p.id_package = :id_package")
-    void deletePackageById(@Param("id_package") Long id_package);
+    public List<PackageResponseDTO> findAllPackages() {
+        String sql = "SELECT id_package, title, description, price, image FROM Package";
+        return jdbcTemplate.query(sql, (resultSet, rowNum) ->
+                new PackageResponseDTO(
+                        resultSet.getLong("id_package"),
+                        resultSet.getString("title"),
+                        resultSet.getString("description"),
+                        resultSet.getFloat("price"),
+                        resultSet.getString("image")
+                )
+        );
+    }
 
+    public void updatePackage(Long id_package, String title, String description, Float price, String image) {
+        String sql = "UPDATE Package SET title = ?, description = ?, price = ?, image = ? WHERE id_package = ?";
+        jdbcTemplate.update(sql, title, description, price, image, id_package);
+    }
+
+    public void deletePackageById(Long id_package) {
+        String sql = "DELETE FROM Package WHERE id_package = ?";
+        jdbcTemplate.update(sql, id_package);
+    }
 }

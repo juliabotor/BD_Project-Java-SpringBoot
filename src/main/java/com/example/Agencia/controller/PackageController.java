@@ -25,7 +25,7 @@ public class PackageController {
     @PostMapping
     public void savePackage(@RequestBody PackageRequestDTO packageData) {
         Package data = new Package(packageData);
-        packageService.savePackage(data.getTitle(), data.getDescription(), data.getPrice(), data.getImage());
+        packageService.savePackage(data.getTitle(), data.getDescription(), data.getPrice(), data.getImage(), data.getId_guide());
     }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")

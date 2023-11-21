@@ -1,24 +1,34 @@
 package com.example.Agencia.Ticket;
 
-import com.example.Agencia.Package.PackageResponseDTO;
-import jakarta.transaction.Transactional;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.util.List;
 
-public interface TicketRepository extends CrudRepository<Ticket, Long> {
+@Repository
+public class TicketRepository {
 
-    @Modifying
-    @Transactional
-    @Query("INSERT INTO Ticket(price, date) VALUES (:price, :date)")
-    void saveTicketWithQuery(@Param("price") Float price,
-                              @Param("date") Date date);
+    private JdbcTemplate jdbcTemplate;
 
-    @Query("SELECT new com.example.Agencia.Ticket.TicketResponseDTO(t.id_ticket, t.price, t.date) FROM Ticket t")
-    List<TicketResponseDTO> findAllTickets();
+    public TicketRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
+    public void saveTicket(Float price, Date date) {
+        String sql = "INSERT INTO Ticket(price, date) VALUES (?, ?)";
+        jdbcTemplate.update(sql, price, date);
+    }
+
+    public List<TicketResponseDTO> findAllTickets() {
+        String sql = "SELECT id_ticket, price, date FROM Ticket";
+
+        return jdbcTemplate.query(sql, (resultSet, rowNum) ->
+                new TicketResponseDTO(
+                        resultSet.getLong("id_ticket"),
+                        resultSet.getFloat("price"),
+                        resultSet.getDate("date")
+                )
+        );
+    }
 }

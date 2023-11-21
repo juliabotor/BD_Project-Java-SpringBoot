@@ -37,22 +37,9 @@ public class SellerController {
     @CrossOrigin( origins = "*" , allowedHeaders = "*")
 
     @PostMapping
-    public ResponseEntity<String> processData(@RequestBody SellerEmployeeRequestDTO dto) {
-        try {
-
-                    Seller seller = new Seller();
-                    seller.setName(dto.getName());
-                    seller.setCpf(dto.getCpf());
-                    seller.setBirth_date(dto.getBirth_date());
-                    seller.setWorkload(dto.getWorkload());
-
-                    sellerService.createSeller(seller);
-
-
-            return ResponseEntity.ok("Dados processados com sucesso");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao processar os dados");
-        }
+    public void saveSeller(@RequestBody SellerRequestDTO dto) {
+        Seller seller = new Seller(dto);
+        sellerService.saveSeller(seller.getId_seller(), seller.getWorkload());
     }
 
 

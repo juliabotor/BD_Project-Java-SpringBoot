@@ -19,7 +19,7 @@ public class EmployeeService {
     }
 
     public void saveEmployee(String name, String cpf, Date birth_date, Long id_supervisor) {
-        employeeRepository.saveEmployeeWithQuery(name, cpf, birth_date, id_supervisor);
+        employeeRepository.saveEmployee(name, cpf, birth_date, id_supervisor);
     }
 
     public List<EmployeeResponseDTO> getAllEmployees() {

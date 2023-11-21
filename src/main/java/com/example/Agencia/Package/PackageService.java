@@ -1,5 +1,6 @@
 package com.example.Agencia.Package;
 
+import com.example.Agencia.Guide.Guide;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,8 @@ public class PackageService {
         return packageRepository.findById(id_package);
     }
 
-    public void savePackage(String title, String description, Float price, String image) {
-        packageRepository.savePackageWithQuery(title, description, price, image);
+    public void savePackage(String title, String description, Float price, String image, Long id_guide) {
+        packageRepository.savePackage(title, description, price, image, id_guide);
     }
 
     public List<PackageResponseDTO> getAllPackages() {

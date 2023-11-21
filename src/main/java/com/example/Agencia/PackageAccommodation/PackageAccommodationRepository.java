@@ -1,25 +1,40 @@
 package com.example.Agencia.PackageAccommodation;
 
-import jakarta.transaction.Transactional;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
 import java.util.List;
 
-public interface PackageAccommodationRepository extends CrudRepository<PackageAccommodation, Long> {
+@Repository
+public class PackageAccommodationRepository {
 
-    @Modifying
-    @Transactional
-    @Query("INSERT INTO package_accommodation(id_package, id_accommodation) VALUES (:id_package, :id_accommodation)")
-    void savePackageAccommodationWithQuery(@Param("id_package") Long id_package,
-                               @Param("id_accommodation") Long id_accommodation);
-    @Query("SELECT NEW com.example.Agencia.PackageAccommodation.PackageAccommodationResponseDTO(p.id_package, p.title, p.description, p.price, p.image, a.id_accommodation ,a.name) " +
-            "FROM com.example.Agencia.Package.Package p " +
-            "JOIN com.example.Agencia.PackageAccommodation.PackageAccommodation pa ON p.id_package = pa.id_package " +
-            "JOIN com.example.Agencia.Accommodation.Accommodation a ON pa.id_accommodation = a.id_accommodation")
-    List<PackageAccommodationResponseDTO> findPackagesAccommodationsNames();
+    private JdbcTemplate jdbcTemplate;
 
+    public PackageAccommodationRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public void savePackageAccommodation(Long idPackage, Long idAccommodation) {
+        String sql = "INSERT INTO package_accommodation(id_package, id_accommodation) VALUES (?, ?)";
+        jdbcTemplate.update(sql, idPackage, idAccommodation);
+    }
+
+    public List<PackageAccommodationResponseDTO> findPackagesAccommodationsNames() {
+        String sql = "SELECT p.id_package, p.title, p.description, p.price, p.image, a.id_accommodation, a.name " +
+                "FROM package p " +
+                "JOIN package_accommodation pa ON p.id_package = pa.id_package " +
+                "JOIN accommodation a ON pa.id_accommodation = a.id_accommodation";
+
+        return jdbcTemplate.query(sql, (resultSet, rowNum) ->
+                new PackageAccommodationResponseDTO(
+                        resultSet.getLong("id_package"),
+                        resultSet.getString("title"),
+                        resultSet.getString("description"),
+                        resultSet.getFloat("price"),
+                        resultSet.getString("image"),
+                        resultSet.getLong("id_accommodation"),
+                        resultSet.getString("name")
+                )
+        );
+    }
 }

@@ -14,6 +14,7 @@ public class Guide {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_guide;
+    @Column(length = 2048)
     private String description;
 
     public Guide(GuideRequestDTO data){

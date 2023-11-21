@@ -16,8 +16,8 @@ public class BookingService {
         return bookingRepository.findBookings();
     }
 
-    public void createBooking(Long id_package, Long id_employee, Long id_client, Long id_ticket){
-        bookingRepository.saveBookingWithQuery(id_package, id_employee, id_client, id_ticket);
+    public void createBooking(Long id_package, Long id_seller, Long id_client, Long id_ticket){
+        bookingRepository.saveBooking(id_package, id_seller, id_client, id_ticket);
     }
 
 }
